@@ -1021,7 +1021,7 @@ zrs-nginx-b86595984-mwnkn       Running   10.242.0.77   10.241.0.6   aks-user-27
 
 The following diagram shows what happened to the pods after their hosting nodes were cordoned and drained.
 
-![Pods Distribution across Zonal Node Pools before the test](./images/zone-redundant-node-pool-before.png)
+![Pods Distribution across Zonal Node Pools before the test](./images/zone-redundant-node-pool-after.png)
 
 The `lrs-nginx-*` ended up in a `Pending` status because the Kubernetes scheduler couldn't find a node where to run it. In fact, the pod needs to mount the LRS Azure disk, but there are no nodes in a `ready` status in the availability zone hosting the disk. Actually, there is a cluster node in this availability zone, but this node is part of the system-node pool that is tainted with `CriticalAddonsOnly=true:NoSchedule` and the pod doen't have the necessary toleration for this taint. The following command can provide more information on why the pod ended up in a `Pending` status.
 
