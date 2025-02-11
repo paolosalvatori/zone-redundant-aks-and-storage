@@ -2,7 +2,7 @@
 
 # Variables
 source ./00-variables.sh
-nodeCount=3
+nodeCount=2
 
 # Retrieve the node count for the current node pool
 echo "Retrieving the node count for the [$userNodePoolName] node pool..."
@@ -24,7 +24,7 @@ az aks nodepool update \
   --only-show-errors 1>/dev/null
 
 # Run this command only if the current node count is not equal to two
-if [[ $count -ne 2 ]]; then
+if [[ $count -ne $nodeCount ]]; then
   # Scale the current node pool to three nodes
   echo "Scaling the [$userNodePoolName] node pool to $nodeCount nodes..."
   az aks nodepool scale \
