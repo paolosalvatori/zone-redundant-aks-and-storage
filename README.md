@@ -607,7 +607,7 @@ If you plan to deploy a workload to AKS which make use of the [Azure Disks CSI D
 3. Create a [persistent volume claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) which references a storage class which makes use of [Zone Redundant Storage for managed disks (ZRS)](https://learn.microsoft.com/en-us/azure/virtual-machines/disks-redundancy#zone-redundant-storage-for-managed-disks), for example the `managed-csi-premium-zrs` storage class we introduced in the previous section.
 4. When deploying pods to a zone-redundant node pool, it is essential to ensure optimal distribution and resilience. To achieve this, you can utilize the [Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/) Kubernetes feature. By implementing Pod Topology Spread Constraints, you gain granular control over how pods are spread across your AKS cluster, taking into account failure-domains like regions, availability zones, and nodes. In this scenario, you can create constraints that span pod replicas across availability zones, as well as across different nodes within a single availability zone. By doing so, you can achieve several benefits. First, spreading pod replicas across availability zones ensures that your application remains available even if an entire zone goes down. Second, distributing pods across different nodes within a zone enhances fault tolerance, as it minimizes the impact of node failures or maintenance activities. By using Pod Topology Spread Constraints, you can maximize the resilience and availability of your applications in an AKS cluster. This approach optimizes resource utilization, minimizes downtime, and delivers a robust infrastructure for your workloads across multiple availability zones and nodes.
 
-### Test Workload resiliency of an AKS cluster with Zone Redundant Node Pools
+### Test Workload resiliency of an AKS cluster with Zonal Node Pools
 
 In this test, we simulate a situation where agent nodes in a particular availability zone experience a failure and become unavailable. The goal is to ensure that the application can still operate properly on the agent nodes in the remaining availability zones. To avoid any interference from the cluster autoscaler during the test and to guarantee that the user-mode zone-redundant node pool has exactly three nodes, each in a different availability zone, you can run the following bash script. This script disables the cluster autoscaler for each node pool and manually sets the number of nodes to three.
 
@@ -1851,7 +1851,7 @@ If you plan to deploy workloads to AKS which make use of the [Azure Disks CSI Dr
 3. Create a separate [persistent volume claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) for each zonal deployment.
 4. When deploying pods to an AKS cluster that spans multiple availability zones, it is essential to ensure optimal distribution and resilience. To achieve this, you can utilize the [Pod Topology Spread Constraints](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/) Kubernetes feature. By implementing Pod Topology Spread Constraints, you gain granular control over how pods are spread across your AKS cluster, taking into account failure-domains like regions, availability zones, and nodes. In this scenario, you can create constraints that span pod replicas across different nodes within the intended availability zone.
 
-### Test Workload resiliency of an AKS cluster with Zonal Node Pools
+### Test Workload resiliency of an AKS cluster with Zone-Redundant Node Pools
 
 In this test, we simulate a scenario where the agent nodes in a specific availability zone suddenly become unavailable due to a failure. The objective is to verify that the application continues to run successfully on the agent nodes in the other availability zones. To prevent interference from the cluster autoscaler during the test and ensure that each zonal node pool consists of exactly two agent nodes, you can execute the following bash script. This script disables the cluster autoscaler on each node pool and manually sets the number of nodes to two for each of them.
 
@@ -1888,7 +1888,7 @@ for ((i = 1; i <= 3; i++)); do
 
   # Run this command only if the current node count is not equal to two
   if [[ $count -ne $nodeCount ]]; then
-    # Scale the current node pool to three nodes
+    # Scale the current node pool to two nodes
     echo "Scaling the [$userNodePoolName] node pool to $nodeCount nodes..."
     az aks nodepool scale \
       --cluster-name $aksClusterName \

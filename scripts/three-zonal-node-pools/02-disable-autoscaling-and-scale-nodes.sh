@@ -29,7 +29,7 @@ for ((i = 1; i <= 3; i++)); do
 
   # Run this command only if the current node count is not equal to two
   if [[ $count -ne $nodeCount ]]; then
-    # Scale the current node pool to three nodes
+    # Scale the current node pool to two nodes
     echo "Scaling the [$userNodePoolName] node pool to $nodeCount nodes..."
     az aks nodepool scale \
       --cluster-name $aksClusterName \
